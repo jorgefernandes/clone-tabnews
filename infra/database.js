@@ -9,6 +9,7 @@ async function query(queryObject) {
     user: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
+    ssl: process.env.ENVIRONMENT === "development" ? false : true,
   });
 
   console.log("Dados de conexão ao banco", {
@@ -17,6 +18,7 @@ async function query(queryObject) {
     user: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
+    ssl: process.env.ENVIRONMENT === "development" ? false : true,
   });
 
   try {
