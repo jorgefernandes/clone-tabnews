@@ -12,15 +12,6 @@ async function query(queryObject) {
     ssl: process.env.ENVIRONMENT === "development" ? false : true,
   });
 
-  console.log("Dados de conexão ao banco", {
-    host: process.env.POSTGRES_HOST,
-    port: process.env.POSTGRES_PORT,
-    user: process.env.POSTGRES_USER,
-    database: process.env.POSTGRES_DB,
-    password: process.env.POSTGRES_PASSWORD,
-    ssl: process.env.ENVIRONMENT === "development" ? false : true,
-  });
-
   try {
     await client.connect();
 
