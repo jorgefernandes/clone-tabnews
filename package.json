@@ -7,13 +7,15 @@
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write .",
     "build": "next build",
-    "test": "jest",
-    "test:watch": "jest --watchAll",
+    "test": "jest --runInBand",
+    "test:watch": "jest --watchAll --runInBand",
     "migration:create": "node-pg-migrate -m infra/migrations create",
     "migration:up": "node-pg-migrate --envPath .env.development -m infra/migrations up"
   },
   "dependencies": {
+    "@next/env": "^16.2.2",
     "dotenv": "^17.3.1",
+    "dotenv-expand": "^12.0.3",
     "next": "^13.1.6",
     "node-pg-migrate": "^6.2.2",
     "pg": "^8.11.3",
