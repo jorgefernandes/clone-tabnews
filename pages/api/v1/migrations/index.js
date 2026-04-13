@@ -3,9 +3,17 @@ import { join } from "node:path";
 import database from "infra/database.js";
 
 export default async function migrations(request, response) {
-  const dbConnection = await database.databaseConnection();
+  let dbConnection;
+
+  const allowedMethods = ["POST", "GET"];
+
+  if (!allowedMethods.includes(request.method)) {
+    return response.status(405).end("Method Not Allowed");
+  }
 
   try {
+    dbConnection = await database.databaseConnection();
+
     const migrationRunnerConfig = {
       dbClient: dbConnection,
       dir: join("infra", "migrations"),
@@ -20,8 +28,6 @@ export default async function migrations(request, response) {
         ...migrationRunnerConfig,
       });
 
-      dbConnection.end();
-
       if (migratedMigrations.length > 0) {
         return response.status(201).json(migratedMigrations);
       }
@@ -35,16 +41,12 @@ export default async function migrations(request, response) {
         dryRun: true,
       });
 
-      dbConnection.end();
-
       return response.status(200).json(pendingMigrations);
     }
-
-    dbConnection.end();
-
-    return response.status(405).end();
   } catch (error) {
-    //
+    console.error(error);
+
+    throw error;
   } finally {
     dbConnection.end();
   }
